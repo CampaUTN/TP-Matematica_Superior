@@ -117,3 +117,7 @@ function calcularTodo (handlesource,event,coeficientesNumerador,coeficientesDeno
   helpdlg (strcat (evalc ("funcionTransferencia"),"\n",evalc ("z"),"\n",evalc ("p"), ...
   "\n",evalc ("g"),"\nExpresion CPG\n",obtenerExpresionCPG(funcionTransferencia),"\n\n",esEstable (p)),"Todos los datos");
 endfunction
+
+function Limpiar (PantallaCPG)
+  set(findobj(0,'style','edit'),'string','');
+endfunction
