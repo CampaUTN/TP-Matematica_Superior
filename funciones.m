@@ -181,3 +181,6 @@ endfunction
 function Limpiar (PantallaCPG)
   set(findobj(0,'style','edit'),'string','');
 endfunction
+function mostrarIntegrantes ()
+    h = msgbox("Integrantes:\n\n    -Belogi, Santiago Tomas\n    -Blanco Bon, Juan Ignacio\n    -Campassi, Rodrigo\n    -Dominguez, Facundo Nicolas\n    -Nucera, Santiago\n\nMatematica Superior - Primer Cuatrimestre 2017","Integrantes");
+     endfunction    
