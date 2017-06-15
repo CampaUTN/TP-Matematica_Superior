@@ -1,18 +1,11 @@
 pkg load control;
 pkg load signal;
 
-function funcionTransferencia = obtenerFuncionTransferencia (nums1,nums2,ganancia) 
-  if (ganancia == 0)
-    funcionTransferencia = tf(nums1,nums2,"OutputName","G(s)");
-  else
-    funcionTransferencia = zpk(nums1,nums2,ganancia,"OutputName","G(s)");
-  endif
-endfunction
-  
 function coeficientes = obtenerCoeficientesDe(textBox)
     coeficientes = [];
     coeficientesStr = strsplit(textBox,",");
     cantCoeficientes = length (coeficientesStr);
+    
     for i = 1:cantCoeficientes
         coeficientes(i) = str2double (coeficientesStr{i});
     endfor
@@ -22,14 +15,21 @@ function funcionTransferencia = procesarFuncionTransferencia (coeficientesNumera
   ganancia = 0;
   nums1 = obtenerCoeficientesDe (get (coeficientesNumerador,"string"));  
   nums2 = obtenerCoeficientesDe (get (coeficientesDenominador,"string"));
+  
   if (hayGanancia)
     ganancia = str2double (get (coeficienteGanancia,"string"));
     if (ganancia == 0)
-      warndlg ("No puede tener una ganancia de 0","Error");
+      warndlg ("La ganancia no puede ser igual a 0");
       return;
+    else
+      funcionTransferencia = zpk(nums1,nums2,ganancia,"OutputName","G(s)");
     endif
+  
+  else
+    funcionTransferencia = tf(nums1,nums2,"OutputName","G(s)");
   endif
-  funcionTransferencia = obtenerFuncionTransferencia(nums1,nums2,ganancia);
+  
+  return funcionTransferencia;
 endfunction
  
 function calcularExpresion (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
