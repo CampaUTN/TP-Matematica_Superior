@@ -47,6 +47,11 @@ function [array1,array2] = cancelarRaices (nums1, nums2)
                       i=1;
                       len1--;
                       len2--;
+                      if( (len1 == 0)  || (len2 == 0))
+                           array1 = nums1;
+                           array2 = nums2;
+                           return;
+                      endif
                 endif
             j++;
         endwhile
