@@ -24,6 +24,33 @@ function funcionTransferencia = procesarFuncionTransferencia (coeficientesNumera
   nums2 = obtenerCoeficientesDe (get (coeficientesDenominador,"string"));
   if (hayGanancia)
     ganancia = str2double (get (coeficienteGanancia,"string"));
+    len1 = length(nums1);
+    len2 = length(nums2);
+    i = 1;
+    j = 1;
+    while (i != len1 + 1 )
+        while (j != len2 + 1 )
+                if ( nums1(i) == nums2(j) )
+                      display(len1);
+                      display(len2);
+                      display(nums1);
+                      display(nums2);
+                      nums1(i) = [];
+                      nums2(j) = [];
+                      j=0;
+                      i=1;
+                      len1--;
+                      len2--;
+                      display(len1);
+                      display(len2);
+                      display(nums1);
+                      display(nums2);
+                endif
+            j++;
+        endwhile
+        i++;
+        j=1;
+    endwhile
     if (ganancia == 0)
       warndlg ("No puede tener una ganancia de 0","Error");
       return;
@@ -86,7 +113,9 @@ function str = expresionCerosPolosGanancia (funcionTransferencia)
   str = strcat(str, "\n");
   str = strcat(str, str2);
 endfunction  
+
 #CPG : ceros, polos, ganancia
+
 function calcularExpresionCPG (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   stringExpresion = strcat("La expresion de ceros, polos y ganancia es \n",expresionCerosPolosGanancia(funcionTransferencia));
@@ -105,14 +134,17 @@ function graficar (handlesource,event,coeficientesNumerador,coeficientesDenomina
 endfunction
 
 function estable = esEstable (polos)
+  estable = "El sistema es estable";
   cantidad = length (polos);
   for i = 1:cantidad
     if (real (polos(i)) > 0)
-      estable = "El sistema es inestable";
-      return;
+      return estable = "El sistema es inestable";
     endif
+    if(real(polos(i)) ==0){
+      estable = "El sistema es marginalmente estable"
+     endif
   endfor
-  estable = "El sistema es estable";
+  return estable
 endfunction
 
 function calcularEstabilidad (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)

@@ -4,9 +4,9 @@ pkg load signal;
 function init()
   Inicio = figure;
   set (Inicio,"name","Trabajo Practico - Matematica Superior");
-  set (Inicio,"numbertitle","off");
   set (Inicio,"color","white");
   set (Inicio,"menubar","none");
+  set (Inicio,"numbertitle","off");
 
   pantalla = uibuttongroup (Inicio, "position", [ 0 0 1 1],...
       "title","Menu","titleposition","centertop");
