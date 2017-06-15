@@ -18,33 +18,7 @@ function funcionTransferencia = procesarFuncionTransferencia (coeficientesNumera
   
   if (hayGanancia)
     ganancia = str2double (get (coeficienteGanancia,"string"));
-    len1 = length(nums1);
-    len2 = length(nums2);
-    i = 1;
-    j = 1;
-    while (i != len1 + 1 )
-        while (j != len2 + 1 )
-                if ( nums1(i) == nums2(j) )
-                      display(len1);
-                      display(len2);
-                      display(nums1);
-                      display(nums2);
-                      nums1(i) = [];
-                      nums2(j) = [];
-                      j=0;
-                      i=1;
-                      len1--;
-                      len2--;
-                      display(len1);
-                      display(len2);
-                      display(nums1);
-                      display(nums2);
-                endif
-            j++;
-        endwhile
-        i++;
-        j=1;
-    endwhile
+    [nums1,nums2] = cancelarRaices (nums1, nums2);
     if (ganancia == 0)
       warndlg ("La ganancia no puede ser igual a 0");
       return;
@@ -57,6 +31,30 @@ function funcionTransferencia = procesarFuncionTransferencia (coeficientesNumera
   endif
   
   return funcionTransferencia;
+endfunction
+
+function [array1,array2] = cancelarRaices (nums1, nums2)
+  len1 = length(nums1);
+    len2 = length(nums2);
+    i = 1;
+    j = 1;
+    while (i != len1 + 1 )
+        while (j != len2 + 1 )
+                if ( nums1(i) == nums2(j) )
+                      nums1(i) = [];
+                      nums2(j) = [];
+                      j=0;
+                      i=1;
+                      len1--;
+                      len2--;
+                endif
+            j++;
+        endwhile
+        i++;
+        j=1;
+    endwhile
+  array1 = nums1;
+  array2 = nums2;
 endfunction
  
 function calcularExpresion (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
