@@ -34,25 +34,29 @@ endfunction
  
 function calcularExpresion (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
-  helpdlg (evalc ("funcionTransferencia"),"Expresion de la funcion de transferencia"); 
+  stringExpresion = strcat("La expresion de la funcion de transferencia es ",evalc ("funcionTransferencia"));
+  h = msgbox (stringExpresion); 
 endfunction
 
 function calcularPolos (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [z,p,g] = tf2zp(funcionTransferencia);
-  helpdlg (evalc ("p"),"Polos");
+  stringPolos= strcat("Los polos son ",evalc ("p"));
+  h = msgbox (stringPolos);
 endfunction
 
 function calcularCeros (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [z,p,g] = tf2zp(funcionTransferencia);
-  helpdlg (evalc ("z"),"Ceros");
+  stringCeros = strcat("Los ceros son ",evalc ("z"));
+  h = msgbox (stringCeros);
 endfunction
 
 function mostrarGanancia (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [z,p,g] = tf2zp(funcionTransferencia);
-  helpdlg (evalc ("g"),"Ganancia");
+  stringGanancia = strcat("La ganancia del sistema es ", evalc ("g"));
+  h = msgbox (stringGanancia);
 endfunction
 
 function str = obtenerExpresionCPG (funcionTransferencia)
@@ -78,7 +82,8 @@ function str = obtenerExpresionCPG (funcionTransferencia)
 endfunction  
 function calcularExpresionCPG (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
-  helpdlg (obtenerExpresionCPG(funcionTransferencia), "Expresion ceros, polos, ganancia");
+  stringExpresion = strcat("La expresion de ceros, polos y ganancia es \n",obtenerExpresionCPG(funcionTransferencia));
+  h = msgbox (stringExpresion);
 endfunction
 
 function graficar (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
@@ -113,9 +118,25 @@ endfunction
 function calcularTodo (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [z,p,g] = tf2zp(funcionTransferencia);
-  graficar(handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
-  helpdlg (strcat (evalc ("funcionTransferencia"),"\n",evalc ("z"),"\n",evalc ("p"), ...
-  "\n",evalc ("g"),"\nExpresion CPG\n",obtenerExpresionCPG(funcionTransferencia),"\n\n",esEstable (p)),"Todos los datos");
+  
+  stringExpresion = strcat("La expresion de la funcion de transferencia es ",evalc ("funcionTransferencia"));
+  h = msgbox (stringExpresion); 
+  
+  stringCeros = strcat("Los ceros son ",evalc ("z"));
+  h = msgbox (stringCeros);
+  
+  stringPolos= strcat("Los polos son ",evalc ("p"));
+  h = msgbox (stringPolos);
+  
+  stringGanancia = strcat("La ganancia del sistema es ", evalc ("g"));
+  h = msgbox (stringGanancia);
+  
+  stringExpresion = strcat("La expresion de ceros, polos y ganancia es \n",obtenerExpresionCPG(funcionTransferencia));
+  h = msgbox (stringExpresion);
+  
+  h = msgbox(mensaje,"Estabilidad");
+  
+  graficar(handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
 endfunction
 
 function Limpiar (PantallaCPG)
