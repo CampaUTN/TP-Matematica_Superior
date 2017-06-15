@@ -4,7 +4,6 @@ pkg load signal;
 function init()
   Inicio = figure;
   set (Inicio,"name","Trabajo Practico - Matematica Superior");
-  set (Inicio,"numbertitle","off");
   set (Inicio,"color","white");
   set (Inicio,"menubar","none");
 
