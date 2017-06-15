@@ -20,9 +20,8 @@ function init()
       "backgroundcolor",[.8,.8,.8],"fontsize",13);
    
   calculoConDatosCPG = uicontrol (pantalla,"string","Ceros, polos y ganancia", ...
-      "position",[300,150,200,100],"callback",{@abrirMetodoDatos}, ...
+      "position",[300,150,200,100],"callback",{@ventanaDatos}, ...
       "backgroundcolor",[.8, .8, .8  ],"fontsize",13);
 endfunction
 
 init();
-
