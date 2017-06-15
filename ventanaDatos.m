@@ -5,6 +5,7 @@ function ventanaDatos (handlesource,event)
   PantallaCPG = figure;
   
   set (PantallaCPG,"name","Funcion de transferencia: Ceros, polos y ganancia");
+  set (PantallaCPG,"numbertitle","off");
     
   entornoCPG = uibuttongroup (PantallaCPG, "position", [ 0 0 1 1],"title","Indique los ceros, polos y ganancia y elija su opcion", "titleposition","centertop");
                

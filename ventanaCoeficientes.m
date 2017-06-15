@@ -5,6 +5,7 @@ function ventanaCoeficientes (handlesource,event)
   PantallaCoeficientes = figure;
   
   set (PantallaCoeficientes,"name","Funcion de transferencia: Coeficientes");
+  set (PantallaCoeficientes,"numbertitle","off");
    
   Coeficientes = uibuttongroup (PantallaCoeficientes, "position", [ 0 0 1 6], "title","Establezca los coeficientes y elija su opcion","titleposition","centertop");
                

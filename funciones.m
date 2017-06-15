@@ -80,6 +80,7 @@ function str = obtenerExpresionCPG (funcionTransferencia)
   str = strcat(str, "\n");
   str = strcat(str, str2);
 endfunction  
+
 function calcularExpresionCPG (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   stringExpresion = strcat("La expresion de ceros, polos y ganancia es \n",obtenerExpresionCPG(funcionTransferencia));
@@ -98,14 +99,17 @@ function graficar (handlesource,event,coeficientesNumerador,coeficientesDenomina
 endfunction
 
 function estable = esEstable (polos)
+  estable = "El sistema es estable";
   cantidad = length (polos);
   for i = 1:cantidad
     if (real (polos(i)) > 0)
-      estable = "El sistema es inestable";
-      return;
+      return estable = "El sistema es inestable";
     endif
+    if(real(polos(i)) ==0){
+      estable = "El sistema es marginalmente estable"
+     endif
   endfor
-  estable = "El sistema es estable";
+  return estable
 endfunction
 
 function calcularEstabilidad (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
