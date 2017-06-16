@@ -40,19 +40,39 @@ function [array1,array2] = cancelarRaices (nums1, nums2)
     j = 1;
     while (i != len1 + 1 )
         while (j != len2 + 1 )
-                if ( nums1(i) == nums2(j) )
-                      nums1(i) = [];
-                      nums2(j) = [];
-                      j=0;
-                      i=1;
-                      len1--;
-                      len2--;
-                      if( (len1 == 0)  || (len2 == 0))
-                           array1 = nums1;
-                           array2 = nums2;
-                           return;
-                      endif
-                endif
+          
+                if ( ( imag(nums1(i)) == 0 ) & ( imag(nums2(j)) == 0 )  )
+                    if  ( cast(nums1(i), 'uint64')  == cast(nums2(j),'uint64') ) 
+                          nums1(i) = [];
+                          nums2(j) = [];
+                          j=0;
+                          i=1;
+                          len1--;
+                          len2--;
+                          if( (len1 == 0)  || (len2 == 0))
+                               array1 = nums1;
+                               array2 = nums2;
+                               return;
+                          endif
+                    endif
+               endif
+               
+               if ( ( imag(nums1(i)) != 0 ) & ( imag(nums2(j)) != 0 )  )
+                    if (  nums1(i)  == nums2(j)  )
+                          nums1(i) = [];
+                          nums2(j) = [];
+                          j=0;
+                          i=1;
+                          len1--;
+                          len2--;
+                          if( (len1 == 0)  || (len2 == 0))
+                               array1 = nums1;
+                               array2 = nums2;
+                               return;
+                          endif
+                    endif
+               endif
+               
             j++;
         endwhile
         i++;
@@ -71,6 +91,7 @@ endfunction
 function calcularPolos (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
+  [ceros,polos] =  cancelarRaices (ceros, polos);
   stringPolos= strcat("Los polos son ",evalc ("polos"));
   h = msgbox (stringPolos);
 endfunction
@@ -78,6 +99,7 @@ endfunction
 function calcularCeros (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
+  [ceros,polos] =  cancelarRaices (ceros, polos);
   stringCeros = strcat("Los ceros son ",evalc ("ceros"));
   h = msgbox (stringCeros);
 endfunction
@@ -85,12 +107,14 @@ endfunction
 function mostrarGanancia (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
+  [ceros,polos] =  cancelarRaices (ceros, polos);
   stringGanancia = strcat("La ganancia del sistema es ", evalc ("ganancia"));
   h = msgbox (stringGanancia);
 endfunction
 
 function str = expresionCerosPolosGanancia (funcionTransferencia)
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
+  [ceros,polos] =  cancelarRaices (ceros, polos);
   
   cantidadDeCeros = length (ceros);
   cantidadDePolos = length (polos);
@@ -153,6 +177,7 @@ endfunction
 function calcularEstabilidad (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
+  [ceros,polos] =  cancelarRaices (ceros, polos);
   mensaje = esEstable(p);
   h = msgbox(mensaje,"Estabilidad");
 endfunction
@@ -160,7 +185,7 @@ endfunction
 function calcularTodo (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
-  
+  [ceros,polos] =  cancelarRaices (ceros, polos);
   stringExpresion = strcat("La expresion de la funcion de transferencia es ",evalc ("funcionTransferencia"));
   h = msgbox (stringExpresion); 
   
