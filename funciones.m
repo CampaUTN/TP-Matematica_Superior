@@ -66,8 +66,17 @@ endfunction
  
 function calcularExpresion (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
-  stringExpresion = strcat("La expresion de la funcion de transferencia es \n",evalc ("funcionTransferencia"));
-  h = msgbox (stringExpresion); 
+  if (hayGanancia)
+        stringExpresion = strcat("La expresion de la funcion de transferencia es \n",evalc ("funcionTransferencia"));
+        h = msgbox (stringExpresion);
+  else
+        [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
+        [ceros,polos] =  cancelarRaices (ceros, polos);
+        [coefNum, coefDem] = zp2tf(ceros,polos, ganancia);
+        funcionTransferencia = tf(coefNum, coefDem,"OutputName","G(s)");
+        stringExpresion = strcat("La expresion de la funcion de transferencia es \n",evalc ("funcionTransferencia"));
+        h = msgbox (stringExpresion);
+  endif
 endfunction
 
 function calcularPolos (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
@@ -235,7 +244,10 @@ function calcularTodo (handlesource,event,coeficientesNumerador,coeficientesDeno
         ceros = nums1;
         polos = nums2;
   else
+        [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
         [ceros,polos] =  cancelarRaices (ceros, polos);
+        [coefNum, coefDem] = zp2tf(ceros,polos, ganancia);
+        funcionTransferencia = tf(coefNum, coefDem,"OutputName","G(s)");
   endif
   stringExpresion = strcat("La expresion de la funcion de transferencia es \n",evalc ("funcionTransferencia"),...
   "\n\n", "La expresion de ceros, polos y ganancia es \n",expresionCerosPolosGanancia(funcionTransferencia, coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia),...

@@ -4,7 +4,7 @@ pkg load signal;
 
 function init()
   Inicio = figure('Position',[400 400 600 170],'Units','Pixels');
-  set (Inicio,"name","T.P. Matematica Superior");
+  set (Inicio,"name","ASIC");
   set (Inicio,"numbertitle","off");
   set (Inicio,"menubar","none");
 
