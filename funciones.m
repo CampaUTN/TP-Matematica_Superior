@@ -173,15 +173,18 @@ function estable = esEstable (polos)
   estable = "El sistema es estable";
   cantidad = length (polos);
   for i = 1:cantidad
-    if (real (polos(i)) > 0)
-      estable = "El sistema es inestable";
-    endif
     if(real(polos(i)) ==0)
       estable = "El sistema es marginalmente estable";
      endif
   endfor
+  for i = 1:cantidad
+    if (real(polos(i)) > 0)
+      estable = "El sistema es inestable";
+    endif
+  endfor
   return;
 endfunction
+
 
 function calcularEstabilidad (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
