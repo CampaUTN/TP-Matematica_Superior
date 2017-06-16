@@ -36,7 +36,7 @@ function ventanaDatos (handlesource,event)
   
   botonEstabilidad = uicontrol (entornoCPG,"string","Indicar estabilidad", "position",[200,70,150,35],"callback",{@calcularEstabilidad,ceros,polos,ganancia,true}, "backgroundcolor",[.8,.8,.8]);
   
-  botonTodo = uicontrol (entornoCPG,"string","Analizar todo", "position",[123,5,300,40],"callback",{@calcularTodo,ceros,polos,ganancia,true}, "backgroundcolor",[.2,.8,.2],"fontsize",16);
+  botonTodo = uicontrol (entornoCPG,"string","Analizar todo", "position",[123,5,300,40],"callback",{@calcularTodo,ceros,polos,ganancia,true}, "backgroundcolor",[.8,.8,.8],"fontsize",16);
   
   botonLimpiar = uicontrol (entornoCPG, "string", "Limpiar","position", [200,235,150,40], "backgroundcolor",[.8,.2,.2], 'callback',{@Limpiar});
 
