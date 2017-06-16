@@ -6,16 +6,17 @@ function ventanaDatos (handlesource,event)
   
   set (PantallaCPG,"name","Funcion de transferencia: Ceros, polos y ganancia");
   set (PantallaCPG,"numbertitle","off");
+  set (PantallaCPG,"menubar","none");
     
   entornoCPG = uibuttongroup (PantallaCPG, "position", [ 0 0 1 1],"title","Indique los ceros, polos y ganancia y elija su opcion", "titleposition","centertop");
                
   textCeros = uicontrol (entornoCPG,"style","text", "string","Ceros","position",[50,320,80,40], "fontsize",16);  
   
-  ceros = uicontrol (entornoCPG, "style", "edit", "string", "3,8", "position",[15,280,150,40], "fontsize",12,"backgroundcolor","white");        
+  ceros = uicontrol (entornoCPG, "style", "edit", "string", "1,4,1+i,3,8", "position",[15,280,150,40], "fontsize",12,"backgroundcolor","white");        
                
   textPolos = uicontrol (entornoCPG,"style","text", "string","Polos","position",[230,320,80,40], "fontsize",16);  
   
-  polos = uicontrol (entornoCPG, "style", "edit", "string", "5,9", "position",[200,280,150,40], "fontsize",12,"backgroundcolor","white");  
+  polos = uicontrol (entornoCPG, "style", "edit", "string", "5+2i,9,1+i,4,12-i", "position",[200,280,150,40], "fontsize",12,"backgroundcolor","white");  
                
   textGanancia = uicontrol (entornoCPG,"style","text", "string","Ganancia","position",[400,320,100,40], "fontsize",16);  
   

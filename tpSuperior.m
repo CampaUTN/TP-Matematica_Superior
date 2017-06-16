@@ -31,4 +31,7 @@ uimenu (e, "label", "Integrantes", "accelerator", "i", ...
       "backgroundcolor",[.8, .8, .8  ],"fontsize",13);
 endfunction
 
+funciones;
+ventanaCoeficientes;
+ventanaDatos;
 init();
