@@ -34,7 +34,7 @@ function ventanaCoeficientes (handlesource,event)
   
   botonEstabilidad = uicontrol (Coeficientes,"string","Indicar estabilidad", "position",[200,50,150,35],"callback",{@calcularEstabilidad,coeficientesNumerador,coeficientesDenominador,0,false}, "backgroundcolor",[.8,.8,.8]);
   
-  botonTodo = uicontrol (Coeficientes,"string","Analizar todo", "position",[123,0,300,40],"callback",{@calcularTodo,coeficientesNumerador,coeficientesDenominador,0,false}, "backgroundcolor",[.2,.8,.2],"fontsize",16);
+  botonTodo = uicontrol (Coeficientes,"string","Analizar todo", "position",[123,0,300,40],"callback",{@calcularTodo,coeficientesNumerador,coeficientesDenominador,0,false}, "backgroundcolor",[.8,.8,.8],"fontsize",16);
    
   botonLimpiar = uicontrol (Coeficientes, "string", "Limpiar","position", [250,225,150,40], "backgroundcolor",[.8,.2,.2], 'callback',{@Limpiar});
 
