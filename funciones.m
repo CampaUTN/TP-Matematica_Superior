@@ -30,7 +30,7 @@ function funcionTransferencia = procesarFuncionTransferencia (coeficientesNumera
     funcionTransferencia = tf(nums1,nums2,"OutputName","G(s)");
   endif
   
-  return funcionTransferencia;
+  return;
 endfunction
 
 function [array1,array2] = cancelarRaices (nums1, nums2)
@@ -141,13 +141,13 @@ function estable = esEstable (polos)
   cantidad = length (polos);
   for i = 1:cantidad
     if (real (polos(i)) > 0)
-      return estable = "El sistema es inestable";
+      estable = "El sistema es inestable";
     endif
-    if(real(polos(i)) ==0){
-      estable = "El sistema es marginalmente estable"
+    if(real(polos(i)) ==0)
+      estable = "El sistema es marginalmente estable";
      endif
   endfor
-  return estable
+  return;
 endfunction
 
 function calcularEstabilidad (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
