@@ -41,7 +41,7 @@ function [array1,array2] = cancelarRaices (nums1, nums2)
   j = 1;
   while (i != len1 + 1 )
       while (j != len2 + 1 )
-              if ( nums1(i) == nums2(j) )
+              if (abs(nums1(i)-nums2(j)) < 1e4*eps(min(abs(nums1(i)),abs(nums2(j)))))
                     nums1(i) = [];
                     nums2(j) = [];
                     j=0;
@@ -152,8 +152,9 @@ function calcularExpresionCPG (handlesource,event,coeficientesNumerador,coeficie
 endfunction
 
 function graficar (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
-  grafico = figure;
+  
   if(hayGanancia)
+        grafico = figure;
         nums1 = obtenerCoeficientesDe (get (coeficientesNumerador,"string"));  
         nums2 = obtenerCoeficientesDe (get (coeficientesDenominador,"string"));
         [nums1,nums2] = cancelarRaices (nums1, nums2);
@@ -165,7 +166,8 @@ function graficar (handlesource,event,coeficientesNumerador,coeficientesDenomina
         
         realPolos = real(polos);
         imagPolos = imag(polos);
-        
+        set (grafico,"name","Grafico de ceros y polos");
+        set (grafico,"numbertitle","off");
         plot(realPolos,imagPolos,'x',realCeros,imagCeros,'o');
         grid on;
         title ("Ceros y polos");
@@ -173,10 +175,18 @@ function graficar (handlesource,event,coeficientesNumerador,coeficientesDenomina
         ylabel ("Eje imaginario");
   else
         funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
+        [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
+        [ceros,polos] =  cancelarRaices (ceros, polos);
         grafico = figure;
+        realCeros = real(ceros);
+        imagCeros = imag(ceros);
+        
+        realPolos = real(polos);
+        imagPolos = imag(polos);
         set (grafico,"name","Grafico de ceros y polos");
         set (grafico,"numbertitle","off");
-        pzmap (funcionTransferencia);
+        plot(realPolos,imagPolos,'x',realCeros,imagCeros,'o');
+        grid on;
         title ("Ceros y polos");
         xlabel ("Eje real");
         ylabel ("Eje imaginario");

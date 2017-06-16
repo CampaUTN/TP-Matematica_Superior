@@ -12,13 +12,13 @@ function ventanaCoeficientes (handlesource,event)
                
   textCoeficientesNumerador = uicontrol (Coeficientes,"style","text", "string","Coeficientes del numerador:","position",[5,350,250,40], "fontsize",12);  
                
-  coeficientesNumerador = uicontrol (Coeficientes, "style", "edit", "string", "2,7,4", "position",[250,350,250,40], "fontsize",14,"backgroundcolor","white");            
+  coeficientesNumerador = uicontrol (Coeficientes, "style", "edit", "string", "1,2,-5,20,-141,18,-135", "position",[250,350,250,40], "fontsize",14,"backgroundcolor","white");            
              
   separador = uicontrol (Coeficientes,"style","text", "string","________________________________","position",[250,315,250,40], "fontsize",12);             
                
   textCoeficientesDenominador = uicontrol (Coeficientes,"style","text", "string","Coeficientes del denominador:","position",[5,270,250,40], "fontsize",12);  
   
-  coeficientesDenominador = uicontrol (Coeficientes, "style", "edit", "string", "6,1,9,3", "position",[250,270,250,40], "fontsize",14,"backgroundcolor","white");
+  coeficientesDenominador = uicontrol (Coeficientes, "style", "edit", "string", "1,-4,4,-4,3", "position",[250,270,250,40], "fontsize",14,"backgroundcolor","white");
                
   botonExpresion = uicontrol (Coeficientes,"string","Expresion", "position",[10,170,150,35],"callback", {@calcularExpresion,coeficientesNumerador,coeficientesDenominador,0,false}, "backgroundcolor",[.8,.8,.8]);
   
