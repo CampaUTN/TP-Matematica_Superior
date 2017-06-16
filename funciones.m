@@ -28,68 +28,41 @@ function funcionTransferencia = procesarFuncionTransferencia (coeficientesNumera
   
   else
     funcionTransferencia = tf(nums1,nums2,"OutputName","G(s)");
+
   endif
   
   return;
 endfunction
 
 function [array1,array2] = cancelarRaices (nums1, nums2)
-  
-  display(nums1);
-                          display(nums2);
   len1 = length(nums1);
-    len2 = length(nums2);
-    i = 1;
-    j = 1;
-    while (i != len1 + 1 )
-        while (j != len2 + 1 )
-          
-                if ( ( imag(nums1(i)) == 0 ) && ( imag(nums2(j)) == 0 )  )
-                    if  ( cast(nums1(i), 'uint64')  == cast(nums2(j),'uint64') ) 
-                          nums1(i) = [];
-                          nums2(j) = [];
-                          j=0;
-                          i=1;
-                          len1--;
-                          len2--;
-                          if( (len1 == 0)  || (len2 == 0))
-                               array1 = nums1;
-                               array2 = nums2;
-                               return;
-                          endif
-                          display("elimino un real");
-                          display(nums1);
-                          display(nums2);
+  len2 = length(nums2);
+  i = 1;
+  j = 1;
+  while (i != len1 + 1 )
+      while (j != len2 + 1 )
+              if ( nums1(i) == nums2(j) )
+                    nums1(i) = [];
+                    nums2(j) = [];
+                    j=0;
+                    i=1;
+                    len1--;
+                    len2--;
+                    if( (len1 == 0)  || (len2 == 0))
+                         array1 = nums1;
+                         array2 = nums2;
+                         return;
                     endif
-               endif
-               
-               if ( ( imag(nums1(i)) != 0 ) && ( imag(nums2(j)) != 0 )  )
-                    if (  nums1(i)  == nums2(j)  )
-                          nums1(i) = [];
-                          nums2(j) = [];
-                          j=0;
-                          i=1;
-                          len1--;
-                          len2--;
-                          if( (len1 == 0)  || (len2 == 0))
-                               array1 = nums1;
-                               array2 = nums2;
-                               return;
-                          endif
-                          display("elimino un complejo");
-                          display(nums1);
-                          display(nums2);
-                    endif
-               endif
-               
-            j++;
-        endwhile
-        i++;
-        j=1;
-    endwhile
+              endif
+          j++;
+      endwhile
+      i++;
+      j=1;
+  endwhile
   array1 = nums1;
   array2 = nums2;
 endfunction
+
  
 function calcularExpresion (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
@@ -100,7 +73,14 @@ endfunction
 function calcularPolos (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
-  [ceros,polos] =  cancelarRaices (ceros, polos);
+  if (hayGanancia)
+        nums1 = obtenerCoeficientesDe (get (coeficientesNumerador,"string"));  
+        nums2 = obtenerCoeficientesDe (get (coeficientesDenominador,"string"));
+        [nums1,nums2] = cancelarRaices (nums1, nums2);
+        polos = nums2;
+  else
+        [ceros,polos] =  cancelarRaices (ceros, polos);
+  endif
   stringPolos= strcat("Los polos son \n",evalc ("polos"));
   h = msgbox (stringPolos);
 endfunction
@@ -108,7 +88,14 @@ endfunction
 function calcularCeros (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
-  [ceros,polos] =  cancelarRaices (ceros, polos);
+  if (hayGanancia)
+        nums1 = obtenerCoeficientesDe (get (coeficientesNumerador,"string"));  
+        nums2 = obtenerCoeficientesDe (get (coeficientesDenominador,"string"));
+        [nums1,nums2] = cancelarRaices (nums1, nums2);
+        ceros = nums1;
+  else
+        [ceros,polos] =  cancelarRaices (ceros, polos);
+  endif
   stringCeros = strcat("Los ceros son \n",evalc ("ceros"));
   h = msgbox (stringCeros);
 endfunction
@@ -116,15 +103,21 @@ endfunction
 function mostrarGanancia (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
-  [ceros,polos] =  cancelarRaices (ceros, polos);
   stringGanancia = strcat("La ganancia del sistema es \n", evalc ("ganancia"));
   h = msgbox (stringGanancia);
 endfunction
 
-function str = expresionCerosPolosGanancia (funcionTransferencia)
+function str = expresionCerosPolosGanancia (funcionTransferencia, coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
-  [ceros,polos] =  cancelarRaices (ceros, polos);
-  
+    if (hayGanancia)
+        nums1 = obtenerCoeficientesDe (get (coeficientesNumerador,"string"));  
+        nums2 = obtenerCoeficientesDe (get (coeficientesDenominador,"string"));
+        [nums1,nums2] = cancelarRaices (nums1, nums2);
+        ceros = nums1;
+        polos = nums2;
+  else
+        [ceros,polos] =  cancelarRaices (ceros, polos);
+  endif
   cantidadDeCeros = length (ceros);
   cantidadDePolos = length (polos);
   
@@ -154,19 +147,40 @@ endfunction
 
 function calcularExpresionCPG (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
-  stringExpresion = strcat("La expresion de ceros, polos y ganancia es \n",expresionCerosPolosGanancia(funcionTransferencia));
+  stringExpresion = strcat("La expresion de ceros, polos y ganancia es \n",expresionCerosPolosGanancia(funcionTransferencia, coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia));
   h = msgbox (stringExpresion);
 endfunction
 
 function graficar (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
-  funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   grafico = figure;
-  set (grafico,"name","Grafico de ceros y polos");
-  set (grafico,"numbertitle","off");
-  pzmap (funcionTransferencia);
-  title ("Ceros y polos");
-  xlabel ("Eje real");
-  ylabel ("Eje imaginario");
+  if(hayGanancia)
+        nums1 = obtenerCoeficientesDe (get (coeficientesNumerador,"string"));  
+        nums2 = obtenerCoeficientesDe (get (coeficientesDenominador,"string"));
+        [nums1,nums2] = cancelarRaices (nums1, nums2);
+        ceros = nums1;
+        polos = nums2;
+        
+        realCeros = real(ceros);
+        imagCeros = imag(ceros);
+        
+        realPolos = real(polos);
+        imagPolos = imag(polos);
+        
+        plot(realPolos,imagPolos,'x',realCeros,imagCeros,'o');
+        grid on;
+        title ("Ceros y polos");
+        xlabel ("Eje real");
+        ylabel ("Eje imaginario");
+  else
+        funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
+        grafico = figure;
+        set (grafico,"name","Grafico de ceros y polos");
+        set (grafico,"numbertitle","off");
+        pzmap (funcionTransferencia);
+        title ("Ceros y polos");
+        xlabel ("Eje real");
+        ylabel ("Eje imaginario");
+  endif
 endfunction
 
 function estable = esEstable (polos)
@@ -189,7 +203,14 @@ endfunction
 function calcularEstabilidad (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
-  [ceros,polos] =  cancelarRaices (ceros, polos);
+    if (hayGanancia)
+        nums1 = obtenerCoeficientesDe (get (coeficientesNumerador,"string"));  
+        nums2 = obtenerCoeficientesDe (get (coeficientesDenominador,"string"));
+        [nums1,nums2] = cancelarRaices (nums1, nums2);
+        polos = nums2;
+  else
+        [ceros,polos] =  cancelarRaices (ceros, polos);
+  endif
   mensaje = esEstable(polos);
   h = msgbox(mensaje,"Estabilidad");
 endfunction
@@ -197,9 +218,17 @@ endfunction
 function calcularTodo (handlesource,event,coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia)
   funcionTransferencia = procesarFuncionTransferencia (coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia);
   [ceros,polos,ganancia] = tf2zp(funcionTransferencia);
-  [ceros,polos] =  cancelarRaices (ceros, polos);
+    if (hayGanancia)
+        nums1 = obtenerCoeficientesDe (get (coeficientesNumerador,"string"));  
+        nums2 = obtenerCoeficientesDe (get (coeficientesDenominador,"string"));
+        [nums1,nums2] = cancelarRaices (nums1, nums2);
+        ceros = nums1;
+        polos = nums2;
+  else
+        [ceros,polos] =  cancelarRaices (ceros, polos);
+  endif
   stringExpresion = strcat("La expresion de la funcion de transferencia es \n",evalc ("funcionTransferencia"),...
-  "\n\n", "La expresion de ceros, polos y ganancia es \n",expresionCerosPolosGanancia(funcionTransferencia),...
+  "\n\n", "La expresion de ceros, polos y ganancia es \n",expresionCerosPolosGanancia(funcionTransferencia, coeficientesNumerador,coeficientesDenominador,coeficienteGanancia,hayGanancia),...
   "\n\n", esEstable(polos));
   h = msgbox (stringExpresion); 
   
